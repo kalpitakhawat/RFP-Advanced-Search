@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2018 at 05:44 PM
--- Server version: 5.6.35-log
--- PHP Version: 5.6.28
+-- Generation Time: Mar 29, 2018 at 08:01 PM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -385,6 +387,7 @@ CREATE TABLE `user_master` (
   `schedule` varchar(2000) DEFAULT NULL,
   `picture` varchar(2000) DEFAULT NULL,
   `certificate` varchar(2000) DEFAULT NULL,
+  `rating` float DEFAULT NULL,
   `cost` varchar(10) DEFAULT NULL,
   `bio` varchar(1000) DEFAULT NULL,
   `join_date` date DEFAULT NULL,
@@ -397,9 +400,9 @@ CREATE TABLE `user_master` (
 -- Dumping data for table `user_master`
 --
 
-INSERT INTO `user_master` (`user_id`, `first_name`, `last_name`, `password`, `gender`, `birth_date`, `email_id`, `phone_no`, `mobile_no`, `experience`, `experience_level`, `address`, `city`, `postalcode`, `country`, `services`, `schedule`, `picture`, `certificate`, `cost`, `bio`, `join_date`, `last_login_date`, `status`, `user_type`) VALUES
-(5, 'yash', 'Raj', '$2y$10$fmjvVHezrEDR3aOzGLL./ubkFm3GJ9sh1kY0iNka6P2UWGzcdG1iu', NULL, '1992-06-12', 'yr@gmail.com', '1234456778', NULL, NULL, NULL, 'jhss hsiagh', 'ottawa', 'k2b 7t2', NULL, 'pt,pc,nu,yg,mt', 'mon-8,tue-10,wed-12,thu-14,fri-16,sat-14,sun-12', '/rfp/image/uploads/Capture.PNG', '/rfp/image/uploads/Capture.PNG', '50.00', 'hi', '2018-03-22', '2018-03-22', NULL, 'r'),
-(6, 'j', 'h', '$2y$10$LjIhNQLRFQFR5cnU2/EUS.XHYynGgM7.zGor3Y5pGswVpgQI9luQO', NULL, '1992-06-06', 'jh@gmail.com', '1111111111', NULL, NULL, NULL, 'gfghh', 'ottawa', '712k2b', NULL, 'pt,pc', 'mon-8,tue-10,sat-14,sun-14', '/rfp/image/uploads/Capture.PNG', '/rfp/image/uploads/Capture.PNG', '70', 'hi', '2018-03-22', '2018-03-22', NULL, 'r');
+INSERT INTO `user_master` (`user_id`, `first_name`, `last_name`, `password`, `gender`, `birth_date`, `email_id`, `phone_no`, `mobile_no`, `experience`, `experience_level`, `address`, `city`, `postalcode`, `country`, `services`, `schedule`, `picture`, `certificate`, `rating`, `cost`, `bio`, `join_date`, `last_login_date`, `status`, `user_type`) VALUES
+(5, 'yash', 'Raj', '$2y$10$fmjvVHezrEDR3aOzGLL./ubkFm3GJ9sh1kY0iNka6P2UWGzcdG1iu', NULL, '1992-06-12', 'yr@gmail.com', '1234456778', NULL, NULL, NULL, 'jhss hsiagh', 'ottawa', 'k2b 7t2', NULL, 'pt,pc,nu,yg,mt', 'mon-8,tue-10,wed-12,thu-14,fri-16,sat-14,sun-12', 'https://blacksaildivision.com/wp-content/uploads/2015/03/centos-users-and-groups.jpg', '/rfp/image/uploads/Capture.PNG', 3, '50.00', 'hi', '2018-03-22', '2018-03-22', NULL, 'r'),
+(6, 'j', 'h', '$2y$10$LjIhNQLRFQFR5cnU2/EUS.XHYynGgM7.zGor3Y5pGswVpgQI9luQO', NULL, '1992-06-06', 'jh@gmail.com', '1111111111', NULL, NULL, NULL, 'gfghh', 'ottawa', '712k2b', NULL, 'pt,pc', 'mon-8,tue-10,sat-14,sun-14', '/rfp/image/uploads/Capture.PNG', '/rfp/image/uploads/Capture.PNG', 0, '70', 'hi', '2018-03-22', '2018-03-22', NULL, 'r');
 
 --
 -- Indexes for dumped tables
@@ -435,11 +438,13 @@ ALTER TABLE `user_master`
 --
 ALTER TABLE `country_master`
   MODIFY `country_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=279;
+
 --
 -- AUTO_INCREMENT for table `user_master`
 --
 ALTER TABLE `user_master`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- Constraints for dumped tables
 --
@@ -450,6 +455,7 @@ ALTER TABLE `user_master`
 ALTER TABLE `user_master`
   ADD CONSTRAINT `user_master_ibfk_1` FOREIGN KEY (`experience_level`) REFERENCES `experience_master` (`level_id`),
   ADD CONSTRAINT `user_master_ibfk_2` FOREIGN KEY (`country`) REFERENCES `country_master` (`country_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
