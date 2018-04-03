@@ -196,22 +196,76 @@ input:checked + .slider:before {
       </div>
       <!-- card.// -->
     </div>
+    <div class="col-md-3" v-if="filter">
+      <div class="card">
+       <article class="card-group-item">
+          <header class="card-header">
+             <h6 class="title">Service</h6>
+          </header>
+          <div class="filter-content">
+             <div class="card-body">
+               <div class="custom-control custom-checkbox" v-for="s in services">
+                  <input type="checkbox" class="custom-control-input" :id="'chk'+s.id" :value="s.id"  v-model="selectService">
+                  <label class="custom-control-label" :for="'chk'+s.id">{{s.name}}</label>
+              </div> <!-- form-check.// -->
+             </div>
+
+             <!-- card-body.// -->
+          </div>
+       </article>
+       <!-- card-group-item.// -->
+      </div>
+      <!-- card.// -->
+    </div>
+    <div class="col-md-3" v-if="filter">
+      <div class="card">
+       <article class="card-group-item">
+          <header class="card-header">
+             <h6 class="title">Country</h6>
+          </header>
+          <div class="filter-content">
+             <div class="card-body">
+                <div class="form-row">
+                   <label for="sel1">Select City</label>
+                    <select class="form-control" id="sel1" v-model="selectCities">
+                      <option value="">Select City</option>
+                      <option :value="c.city" v-for="c in cities">{{c.city}}</option>
+                    </select>
+                </div>
+             </div>
+             <!-- card-body.// -->
+
+          </div>
+       </article>
+       <!-- card-group-item.// -->
+      </div>
+      <!-- card.// -->
+    </div>
   </div>
   <div class="row">
     <div class="col-lg-12" style="display: inline-block; padding-top: 50px;">
        <div class="row">
-          <div class="col-lg-4 col-md-6 mb-4" v-for="r in result">
+          <div class="col-lg-4 col-md-4 mb-3" v-for="r in result">
              <div class="card h-100">
-                <a href="#"><img class="card-img-top" v-bind:src="r.picture" alt=""></a>
-                <div class="card-body">
-                   <h4 class="card-title">
-                      <a href="#">{{ r.first_name + ' ' + r.last_name }}</a>
-                   </h4>
-                   <h5>{{'$' + r.cost}}</h5>
-                   <p class="card-text"> {{r.services}} </p>
+               <div class="card-body">
+                <div class="row">
+                  <div class="col-5 mt-2 pl-1 pr-0">
+                    <a href="#"><img class="card-img-top" v-bind:src="r.picture" alt="" ></a>
+                  </div>
+                  <div class="col-7">
+                    <div class="row">
+                     <h5 class="card-title col-6 pr-0">
+                      <a href="#" style="text-transform: capitalize;">{{ r.first_name + ' ' + r.last_name }}</a>
+                   </h5>
+                   <small class="card-text col-6 text-right"> {{calculateAge(new Date(r.birth_date))}} Years</small>
+                   </div>
+                   <h6>{{'$' + r.cost}}</h6>
+                   <p class="card-text float-right"><img :src="getServiceImage(s)" v-for="s in r.services.split(',')" width="30px"></p>
+                  </div>
                 </div>
-                <div class="card-footer">
-                   <small class="text-muted"><span v-for='rate in (r.rating-0)'>&#9733;</span><span v-for='rate in (5-r.rating)'>&#9734;</span> </small>
+              </div>
+              <div class="card-footer">
+                   <h5 class="text-muted my-0"><span v-for='rate in (r.rating-0)'> &#9733; </span> <span v-for='rate in (5-r.rating)'> &#9734; </span> </h5>
                 </div>
              </div>
           </div>
@@ -244,6 +298,12 @@ input:checked + .slider:before {
     query:'',
     result:'',
     filter:true,
+    services:[],
+    selectService : [],
+    serviceQuery:'',
+    cities :[],
+    selectCities:'',
+    cityQuery:'',
   },
   methods:{
     search:function () {
@@ -284,41 +344,97 @@ input:checked + .slider:before {
             }else if(index == 0){
               self.rating += ' AND ( '
             }
-            self.rating += 'rating >= ' + item
+            self.rating += 'rating = ' + item
           });
           self.rating = self.rating + ')'
         }
+        self.cityQuery = '';
+        if (self.selectCountries != '') {
+          self.cityQuery = " AND city LIKE '%"+self.selectCities+"%'"
+        }
+        // self.CountryQuery = ''
+        self.serviceQuery = ''
+        if (self.selectService.length > 0) {
+          // console.log(self.selectService);
 
+          self.selectService.forEach(function (item,index) {
+             if(index != 0){
+              self.serviceQuery += ' OR '
+            }else if(index == 0){
+              self.serviceQuery =''
+              self.serviceQuery += ' AND ( '
+            }
+            self.serviceQuery += "services LIKE '%"+item+"%'" 
+          })
+          self.serviceQuery += ')'
+        }
         if(self.certified == 'yes'){
           self.cert = ' AND certificate != ""'
         }else if (self.certified == 'no') {
           self.cert = ' AND certificate == ""'
         }
         self.query = '';
-        self.query = self.range+self.rating+self.cert
+        self.query = self.range+self.rating+self.cert+self.cityQuery+self.serviceQuery
 
       }
-      console.log(self.query);
+      // console.log(self.query);
 
        $.post('ajax_search_result.php' , {
           'q' : self.q,
           'query' : self.query
        },function (result) {
-         console.log(result);
+         // console.log(result);
 
          self.result = JSON.parse(result);
-         console.log(self.result);
+         // console.log(self.result);
+       });
+    },
+    calculateAge:function (birthday) { // birthday is a date
+        var ageDifMs = Date.now() - birthday.getTime();
+        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    },
+    getServices:function () {
+       var self = this;
+
+       $.post('get-services.php',function (result) {
+         // console.log(result);
+
+        self.services = JSON.parse(result);
+       });
+    },
+    getServiceImage:function (id) {
+       var self = this;
+      
+      var temp;
+      self.services.forEach(function(item){
+        if(item.id==id){
+          temp = item.image;
+        }
+      });
+      return temp;
+    },
+    getCities:function () {
+       var self = this;
+      $.post('get-cities.php',function (result) {
+         // console.log(result);
+
+         self.cities = JSON.parse(result);
+         // console.log(self.services[1]);
        });
     }
   },
-  mounted:function () {
+  created:function () {
     var self = this;
     self.textInput = getQueryStringValue('q');
+     self.getServices();
+     self.getCities();
     self.search();
   },
   watch:{
     priceRange:function () {
       var self = this;
+     
       self.search();
     },
     userRating:function () {
@@ -331,6 +447,16 @@ input:checked + .slider:before {
     },
     filter:function () {
       var self = this;
+      self.search();
+    },
+    selectService:function () {
+
+       var self = this;
+       // console.log(self.selectService);
+      self.search();
+    },
+    selectCities:function () {
+       var self = this;
       self.search();
     }
   }

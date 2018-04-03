@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2018 at 08:01 PM
+-- Generation Time: Apr 03, 2018 at 08:21 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.1.12
 
@@ -364,6 +364,29 @@ INSERT INTO `rating_master` (`rating_id`, `rating_number`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `service`
+--
+
+CREATE TABLE `service` (
+  `id` varchar(2) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `image` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `service`
+--
+
+INSERT INTO `service` (`id`, `name`, `image`) VALUES
+('mt', 'Massage Therapy', 'img/service/4.png'),
+('nu', 'Nutritionist', 'img/service/3.png'),
+('pc', 'Prep Coach', 'img/service/5.png'),
+('pt', 'Personal Trainer', 'img/service/1.png'),
+('yg', 'Yoga', 'img/service/2.png');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_master`
 --
 
@@ -401,8 +424,8 @@ CREATE TABLE `user_master` (
 --
 
 INSERT INTO `user_master` (`user_id`, `first_name`, `last_name`, `password`, `gender`, `birth_date`, `email_id`, `phone_no`, `mobile_no`, `experience`, `experience_level`, `address`, `city`, `postalcode`, `country`, `services`, `schedule`, `picture`, `certificate`, `rating`, `cost`, `bio`, `join_date`, `last_login_date`, `status`, `user_type`) VALUES
-(5, 'yash', 'Raj', '$2y$10$fmjvVHezrEDR3aOzGLL./ubkFm3GJ9sh1kY0iNka6P2UWGzcdG1iu', NULL, '1992-06-12', 'yr@gmail.com', '1234456778', NULL, NULL, NULL, 'jhss hsiagh', 'ottawa', 'k2b 7t2', NULL, 'pt,pc,nu,yg,mt', 'mon-8,tue-10,wed-12,thu-14,fri-16,sat-14,sun-12', 'https://blacksaildivision.com/wp-content/uploads/2015/03/centos-users-and-groups.jpg', '/rfp/image/uploads/Capture.PNG', 3, '50.00', 'hi', '2018-03-22', '2018-03-22', NULL, 'r'),
-(6, 'j', 'h', '$2y$10$LjIhNQLRFQFR5cnU2/EUS.XHYynGgM7.zGor3Y5pGswVpgQI9luQO', NULL, '1992-06-06', 'jh@gmail.com', '1111111111', NULL, NULL, NULL, 'gfghh', 'ottawa', '712k2b', NULL, 'pt,pc', 'mon-8,tue-10,sat-14,sun-14', '/rfp/image/uploads/Capture.PNG', '/rfp/image/uploads/Capture.PNG', 0, '70', 'hi', '2018-03-22', '2018-03-22', NULL, 'r');
+(5, 'yash', 'Raj', '$2y$10$fmjvVHezrEDR3aOzGLL./ubkFm3GJ9sh1kY0iNka6P2UWGzcdG1iu', NULL, '2000-06-12', 'yr@gmail.com', '1234456778', NULL, NULL, NULL, 'jhss hsiagh', 'ottawa', 'k2b 7t2', NULL, 'pt,yg,nu', 'mon-8,tue-10,wed-12,thu-14,fri-16,sat-14,sun-12', 'https://blacksaildivision.com/wp-content/uploads/2015/03/centos-users-and-groups.jpg', '/rfp/image/uploads/Capture.PNG', 3, '50.00', 'hi', '2018-03-22', '2018-03-22', NULL, 'r'),
+(6, 'j', 'h', '$2y$10$LjIhNQLRFQFR5cnU2/EUS.XHYynGgM7.zGor3Y5pGswVpgQI9luQO', NULL, '1992-06-06', 'jh@gmail.com', '1111111111', NULL, NULL, NULL, 'gfghh', 'ottawa', '712k2b', NULL, 'pc,mt,yg', 'mon-8,tue-10,sat-14,sun-14', 'https://blacksaildivision.com/wp-content/uploads/2015/03/centos-users-and-groups.jpg', '/rfp/image/uploads/Capture.PNG', 0, '70', 'hi', '2018-03-22', '2018-03-22', NULL, 'r');
 
 --
 -- Indexes for dumped tables
@@ -420,6 +443,12 @@ ALTER TABLE `country_master`
 ALTER TABLE `experience_master`
   ADD PRIMARY KEY (`level_id`),
   ADD UNIQUE KEY `level_id` (`level_id`);
+
+--
+-- Indexes for table `service`
+--
+ALTER TABLE `service`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user_master`

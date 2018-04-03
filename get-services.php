@@ -11,24 +11,16 @@
 	if ($conn === false) {
     die("ERROR: Could not connect. ".mysqli_connect_error());
 	}
-	$sql = "SELECT user_id,first_name, last_name, services, rating , picture, cost, birth_date FROM user_master";		
-	if(isset($_POST['q'])){
-		$q = $_POST['q'];
-		$sql = $sql ." WHERE (first_name LIKE '%".$q."%' OR last_name LIKE '%".$q."%' OR email_id LIKE '%".$q."%')";
-
-		if(!empty($_POST['query'])){
-			$sql = $sql . $_POST['query'];
-		}
-	}
-
-	//die($sql);
+	$sql = "SELECT * FROM service";
 	$result = mysqli_query($conn,$sql);
 	    // output data of each row
 	    //echo('<pre>');
 	    $data = [];
 	    while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-
-	        array_push($data, $row);
+	    	//die($row['id']);
+	      array_push($data, $row);
 	    }
+	    // echo $data;
+	    // print_r($data);
 	    echo json_encode($data);	
  ?>
